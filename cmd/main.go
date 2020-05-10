@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/alfonsocatanzaro/go-wol-esx/api"
+	"github.com/gorilla/handlers"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -17,15 +18,15 @@ var version = "1.0.0"
 func main() {
 	//args container struct
 	cfg := struct {
-		Listen string
+		Port int32
 	}{}
 
 	// init args Parser
 	kp := kingpin.New(filepath.Base(os.Args[0]), "GO-WOL-ESX server.")
 	kp.Version(version)
-	kp.Flag("listen", "Listen address of the server").
-		Default("127.0.0.1:3000").
-		StringVar(&cfg.Listen)
+	kp.Flag("port", "Listen port of the server").
+		Default("3000").
+		Int32Var(&cfg.Port)
 
 	kp.HelpFlag.Short('h')
 
@@ -37,12 +38,13 @@ func main() {
 	// setup request handlers
 	mux := http.NewServeMux()
 	mux.Handle("/api/", api.HelloWorldHandler())
-	mux.Handle("/", http.FileServer(http.Dir("/ui/build/")))
+	mux.Handle("/", http.FileServer(http.Dir("../ui/build/")))
 
+	mainHandler := handlers.LoggingHandler(os.Stdout, mux)
 	// configure http server
 	srv := &http.Server{
-		Addr:    cfg.Listen,
-		Handler: mux,
+		Addr:    fmt.Sprintf(":%v", cfg.Port),
+		Handler: mainHandler,
 	}
 
 	// create channel for error
@@ -50,8 +52,9 @@ func main() {
 
 	// start server and bind error channel to error return of http server  start
 	go func() {
-		fmt.Println("Starting", cfg.Listen)
 		errs <- srv.ListenAndServe()
+
+		fmt.Println("Listen on port:", cfg.Port)
 	}()
 
 	// make channel for stop signal
