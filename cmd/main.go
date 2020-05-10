@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/alfonsocatanzaro/go-wol-esx/api"
+	"github.com/alfonsocatanzaro/go-wol-esx/auth"
 	"github.com/gorilla/handlers"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
@@ -37,14 +38,15 @@ func main() {
 	}
 	// setup request handlers
 	mux := http.NewServeMux()
-	mux.Handle("/api/", api.HelloWorldHandler())
+	mux.Handle("/api/", auth.JwtMiddleware.Handler(api.HelloWorldHandler))
+	mux.Handle("/get-token/", auth.GetAuthToken)
+	
 	mux.Handle("/", http.FileServer(http.Dir("../ui/build/")))
 
-	mainHandler := handlers.LoggingHandler(os.Stdout, mux)
 	// configure http server
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%v", cfg.Port),
-		Handler: mainHandler,
+		Handler: handlers.LoggingHandler(os.Stdout, mux),
 	}
 
 	// create channel for error
@@ -65,7 +67,7 @@ func main() {
 	// wait for stop or error signal from one respective channel
 	select {
 	case <-stop:
-		fmt.Println("Shutting down...")
+		fmt.Println("\nShutting down...")
 		os.Exit(0)
 	case err := <-errs:
 		fmt.Println("Failed to start server: ", err.Error())
