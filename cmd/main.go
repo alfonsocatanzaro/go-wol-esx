@@ -40,7 +40,18 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/api/", auth.JwtMiddleware.Handler(api.HelloWorldHandler))
 	mux.Handle("/get-token/", auth.GetAuthToken)
-	
+	// TODO api for get computers (status and child status)
+	// TODO api for new computer
+	// TODO api for edit computer
+	// TODO api for wol a pc
+	// TODO api for start/stop/pause VMs 
+	// TODO api for shutdown esx host
+	// TODO view model for mail page
+	// TODO model for add/edit computer
+	// TODO api for getting status of pcs
+	// TODO component for ping
+	// TODO component for manage esxi host
+	 
 	mux.Handle("/", http.FileServer(http.Dir("../ui/build/")))
 
 	// configure http server

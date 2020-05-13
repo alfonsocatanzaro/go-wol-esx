@@ -3,7 +3,8 @@ import Main from './pages/Main';
 import Login from './pages/Login';
 import NavBar from './components/NavBar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+// TODO Hide navbar if not logged in
+// TODO If not logged in redirect always to login page
 function App() {
   return (
     <Router>
