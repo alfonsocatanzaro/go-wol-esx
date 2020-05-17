@@ -1,31 +1,57 @@
 package auth
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/auth0/go-jwt-middleware"
 	"github.com/dgrijalva/jwt-go"
+	"net/http"
+	"time"
 )
 
 var signKey = []byte("HSKJAHSKJ(/&JHBSDAKJHD")
 
-// GetAuthToken create jwt token
-var GetAuthToken = http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+// LoginHandler Validate username and password and return jwt token
+var LoginHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var loginPayload LoginPayload
+	jsonDecoder := json.NewDecoder(r.Body)
+	err := jsonDecoder.Decode(&loginPayload)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if loginPayload.Username != "alfonso" || loginPayload.Password != "password" {
+		http.Error(w, "Wrong username or passoword!", http.StatusUnauthorized)
+		return
+	}
+
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
 	claims["admin"] = true
-	claims["name"] = "Alfonso Catanzaro"
+	claims["name"] = loginPayload.Username
 	claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
 
 	tokenString, err := token.SignedString(signKey)
 	if err != nil {
-
 		fmt.Println(err.Error())
 	}
-	res.Write([]byte(tokenString))
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(tokenString))
 })
 
 // JwtMiddleware for token validation
@@ -35,3 +61,9 @@ var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	},
 	SigningMethod: jwt.SigningMethodHS256,
 })
+
+// LoginPayload will contain the login info posted to the handler
+type LoginPayload struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

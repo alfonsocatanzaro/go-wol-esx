@@ -10,7 +10,10 @@ import (
 
 	"github.com/alfonsocatanzaro/go-wol-esx/api"
 	"github.com/alfonsocatanzaro/go-wol-esx/auth"
+	"github.com/alfonsocatanzaro/go-wol-esx/utils"
 	"github.com/gorilla/handlers"
+
+	// "github.com/gorilla/handlers"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -38,26 +41,26 @@ func main() {
 	}
 	// setup request handlers
 	mux := http.NewServeMux()
-	mux.Handle("/api/", auth.JwtMiddleware.Handler(api.HelloWorldHandler))
-	mux.Handle("/get-token/", auth.GetAuthToken)
+	mux.Handle("/", http.FileServer(http.Dir("./ui/build/")))
+	mux.Handle("/api/test", auth.JwtMiddleware.Handler(api.HelloWorldHandler))
+	mux.Handle("/api/login", auth.LoginHandler)
+
 	// TODO api for get computers (status and child status)
 	// TODO api for new computer
 	// TODO api for edit computer
 	// TODO api for wol a pc
-	// TODO api for start/stop/pause VMs 
+	// TODO api for start/stop/pause VMs
 	// TODO api for shutdown esx host
 	// TODO view model for mail page
 	// TODO model for add/edit computer
 	// TODO api for getting status of pcs
 	// TODO component for ping
 	// TODO component for manage esxi host
-	 
-	mux.Handle("/", http.FileServer(http.Dir("../ui/build/")))
 
 	// configure http server
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%v", cfg.Port),
-		Handler: handlers.LoggingHandler(os.Stdout, mux),
+		Handler: utils.CorsHandler(handlers.LoggingHandler(os.Stdout, mux)),
 	}
 
 	// create channel for error
@@ -66,7 +69,6 @@ func main() {
 	// start server and bind error channel to error return of http server  start
 	go func() {
 		errs <- srv.ListenAndServe()
-
 		fmt.Println("Listen on port:", cfg.Port)
 	}()
 

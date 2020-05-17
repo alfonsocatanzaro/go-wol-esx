@@ -18,6 +18,6 @@ var HelloWorldHandler = http.HandlerFunc(func(res http.ResponseWriter, req *http
 		return
 	}
 
-	res.WriteHeader(200)
+	res.WriteHeader(http.StatusOK)
 	res.Write(body)
 })

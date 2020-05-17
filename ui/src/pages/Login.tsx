@@ -1,26 +1,50 @@
-import React from 'react';
+import React, { useState, FormEvent } from 'react';
 import './Login.css';
+import Axios from 'axios';
+
 // TODO add login state fot page
 // TODO call api for login
 // TODO il already login redirect to home
-function Login() {
+
+const Login: React.FC = () => {
+  const [username, setUsername] = useState('alfonso');
+  const [password, setPassword] = useState('password');
+  const [jwtToken, setJwtToken] = useState('--');
+
+  function Login(e: FormEvent) {
+    e.preventDefault();
+    console.log(username);
+    console.log(password);
+
+    (async () => {
+      const users = await Axios.post(
+        'http://localhost:3000/api/login',
+        { username, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      setJwtToken(users.data);
+    })();
+  }
+
   return (
     <div className="row">
       <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div className="card card-signin my-5">
           <div className="card-body">
             <h5 className="card-title text-center">Sign In</h5>
-            <form className="form-signin">
+            <form className="form-signin" onSubmit={(e) => Login(e)}>
               <div className="form-label-group">
                 <input
-                  type="email"
-                  id="inputEmail"
+                  type="text"
+                  id="inputUsername"
                   className="form-control"
-                  placeholder="Email address"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   autoFocus
                 />
-                <label htmlFor="inputEmail">Email address</label>
+                <label htmlFor="inputUsername">Username</label>
               </div>
 
               <div className="form-label-group">
@@ -29,6 +53,8 @@ function Login() {
                   id="inputPassword"
                   className="form-control"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 <label htmlFor="inputPassword">Password</label>
@@ -44,6 +70,7 @@ function Login() {
                 Sign in
               </button>
               <hr className="my-4" />
+              <p>{jwtToken}</p>
               {/* 
               <button className="btn btn-lg btn-google btn-block text-uppercase" type="submit">
                 <i className="fab fa-google mr-2"></i> Sign in with Google
@@ -57,6 +84,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

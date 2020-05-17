@@ -1,9 +1,12 @@
-init:
+buildui:
 	cd ui && npm run build
 
-build: init
+buildserver: 
 	go build -o bin/go-wol-esx cmd/main.go
 
-run: build
+runall: buildui buildserver
+	bin/go-wol-esx
+
+run: buildserver
 	bin/go-wol-esx
 

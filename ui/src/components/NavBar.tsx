@@ -5,7 +5,7 @@ export default function NavBar(): ReactElement {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/" >
           <img src="http://placehold.it/150x50?text=Logo" alt="" />
         </a>
         <button
