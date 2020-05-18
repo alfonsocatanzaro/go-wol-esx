@@ -22,15 +22,21 @@ var version = "1.0.0"
 func main() {
 	//args container struct
 	cfg := struct {
-		Port int32
+		Port  int32
+		Debug bool
 	}{}
 
 	// init args Parser
 	kp := kingpin.New(filepath.Base(os.Args[0]), "GO-WOL-ESX server.")
 	kp.Version(version)
 	kp.Flag("port", "Listen port of the server").
+		Short('p').
 		Default("3000").
 		Int32Var(&cfg.Port)
+
+	kp.Flag("debug", "debug mode on").
+		Short('d').
+		BoolVar(&cfg.Debug)
 
 	kp.HelpFlag.Short('h')
 
@@ -58,9 +64,16 @@ func main() {
 	// TODO component for manage esxi host
 
 	// configure http server
+	var handler http.Handler
+	if cfg.Debug {
+		handler = utils.CorsHandler(handlers.LoggingHandler(os.Stdout, mux))
+	} else {
+		handler = mux
+	}
+
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%v", cfg.Port),
-		Handler: utils.CorsHandler(handlers.LoggingHandler(os.Stdout, mux)),
+		Handler: handler,
 	}
 
 	// create channel for error
