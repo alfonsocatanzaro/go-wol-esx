@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
     (async () => {
       const users = await Axios.post(
-        'http://localhost:3000/api/login',
+        '/api/login',
         { username, password },
         { headers: { 'Content-Type': 'application/json' } }
       );

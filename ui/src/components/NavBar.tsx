@@ -1,7 +1,9 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { LoginStatusContext, LoginStatus } from '../contexts/LoginContext'
 
 export default function NavBar(): ReactElement {
+  const loginStatus = useContext<LoginStatus>(LoginStatusContext);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div className="container">
@@ -30,6 +32,11 @@ export default function NavBar(): ReactElement {
               <NavLink className="nav-link" to="/login" activeClassName="active">
                 Login
               </NavLink>
+            </li>
+            <li className="nav-item">
+              <span className="nav-link">
+                [{loginStatus.username}]
+              </span>
             </li>
           </ul>
         </div>
