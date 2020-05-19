@@ -1,9 +1,10 @@
 import React, { ReactElement, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LoginStatusContext, LoginStatus } from '../contexts/LoginContext'
+import { LoginStatusContext, LoginStatusContextType } from '../contexts/LoginContext'
 
 export default function NavBar(): ReactElement {
-  const loginStatus = useContext<LoginStatus>(LoginStatusContext);
+  const login = useContext<LoginStatusContextType>(LoginStatusContext);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div className="container">
@@ -28,19 +29,30 @@ export default function NavBar(): ReactElement {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/login" activeClassName="active">
-                Login
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <span className="nav-link">
-                [{loginStatus.username}]
+            {
+              login.loginStatus.isLoggedIn ?
+                <>
+                  <li className="nav-item">
+                    <a className="nav-link" href="#" onClick={() => login.logoutFn()}>
+                      Logout
+                  </a>
+                  </li>
+                  <li className="nav-item">
+                    <span className="nav-link">
+                      [{login.loginStatus.username}]
               </span>
-            </li>
+                  </li>
+                </>
+                :
+                < li className="nav-item" >
+                  <NavLink className="nav-link" to="/login" activeClassName="active">
+                    Login
+                  </NavLink>
+                </li >
+            }
           </ul>
         </div>
       </div>
-    </nav>
+    </nav >
   );
 }

@@ -1,20 +1,17 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useContext } from 'react';
 import './Login.css';
 import Axios from 'axios';
+import { LoginStatusContextType, LoginStatusContext } from '../contexts/LoginContext';
 
-// TODO add login state fot page
-// TODO call api for login
 // TODO il already login redirect to home
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('alfonso');
   const [password, setPassword] = useState('password');
-  const [jwtToken, setJwtToken] = useState('--');
+  const login = useContext<LoginStatusContextType>(LoginStatusContext);
 
   function Login(e: FormEvent) {
     e.preventDefault();
-    console.log(username);
-    console.log(password);
 
     (async () => {
       const users = await Axios.post(
@@ -22,7 +19,7 @@ const Login: React.FC = () => {
         { username, password },
         { headers: { 'Content-Type': 'application/json' } }
       );
-      setJwtToken(users.data);
+      login.loginFn(username, users.data);
     })();
   }
 
@@ -70,7 +67,7 @@ const Login: React.FC = () => {
                 Sign in
               </button>
               <hr className="my-4" />
-              <p>{jwtToken}</p>
+              <p>{login.loginStatus.token}</p>
               {/* 
               <button className="btn btn-lg btn-google btn-block text-uppercase" type="submit">
                 <i className="fab fa-google mr-2"></i> Sign in with Google

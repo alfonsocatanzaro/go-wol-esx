@@ -8,5 +8,6 @@ require (
 	github.com/auth0/go-jwt-middleware v0.0.0-20200507191422-d30d7b9ece63
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gorilla/handlers v1.4.2
+	golang.org/x/tools/gopls v0.4.1 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )

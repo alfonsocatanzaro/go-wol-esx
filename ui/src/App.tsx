@@ -3,13 +3,19 @@ import Main from './pages/Main';
 import Login from './pages/Login';
 import NavBar from './components/NavBar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { LoginStatusContext, initialLoginStatus } from './contexts/LoginContext'
+import { LoginStatusContext } from './contexts/LoginContext'
+import { useLogin } from './hooks/useLogin';
+
 // TODO Hide navbar if not logged in
 // TODO If not logged in redirect always to login page
 function App() {
+
+  const { loginStatus, loginFn, logoutFn } = useLogin();
+
+
   return (
     <Router>
-      <LoginStatusContext.Provider value={initialLoginStatus}>
+      <LoginStatusContext.Provider value={{ loginStatus, loginFn, logoutFn }}>
         <NavBar />
         <div className="container">
           <Switch>
