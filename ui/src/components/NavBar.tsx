@@ -29,32 +29,32 @@ export default function NavBar(): ReactElement {
                 Home
               </NavLink>
             </li>
-
-            {login.loginStatus.isLoggedIn &&
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/privatepage" activeClassName="active">
+                Private
+              </NavLink>
+            </li>
+            {login.loginStatus.isLoggedIn ? (
               <>
                 <li className="nav-item">
-                  <a className="nav-link" href="#" onClick={login.logoutFn}>
+                  <a className="nav-link" href="#" onClick={() => login.logoutFn()}>
                     Logout
                   </a>
                 </li>
                 <li className="nav-item">
-                  <span className="nav-link">
-                    [{login.loginStatus.username}]
-              </span>
+                  <span className="nav-link">[{login.loginStatus.username}]</span>
                 </li>
               </>
-            }
-
-            {!login.loginStatus.isLoggedIn &&
+            ) : (
               <li className="nav-item">
                 <NavLink className="nav-link" to="/login" activeClassName="active">
                   Login
-                  </NavLink>
-              </li >
-            }
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </div>
-    </nav >
+    </nav>
   );
 }
