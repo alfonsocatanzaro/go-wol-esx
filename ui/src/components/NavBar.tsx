@@ -8,7 +8,7 @@ export default function NavBar(): ReactElement {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div className="container">
-        <a className="navbar-brand" href="/" >
+        <a className="navbar-brand" href="/">
           <img src="http://placehold.it/150x50?text=Logo" alt="" />
         </a>
         <button
@@ -29,30 +29,32 @@ export default function NavBar(): ReactElement {
                 Home
               </NavLink>
             </li>
-            {
-              login.loginStatus.isLoggedIn ?
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link" href="#" onClick={() => login.logoutFn()}>
-                      Logout
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/privatepage" activeClassName="active">
+                Private
+              </NavLink>
+            </li>
+            {login.loginStatus.isLoggedIn ? (
+              <>
+                <li className="nav-item">
+                  <a className="nav-link" href="#" onClick={() => login.logoutFn()}>
+                    Logout
                   </a>
-                  </li>
-                  <li className="nav-item">
-                    <span className="nav-link">
-                      [{login.loginStatus.username}]
-              </span>
-                  </li>
-                </>
-                :
-                < li className="nav-item" >
-                  <NavLink className="nav-link" to="/login" activeClassName="active">
-                    Login
-                  </NavLink>
-                </li >
-            }
+                </li>
+                <li className="nav-item">
+                  <span className="nav-link">[{login.loginStatus.username}]</span>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/login" activeClassName="active">
+                  Login
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </div>
-    </nav >
+    </nav>
   );
 }

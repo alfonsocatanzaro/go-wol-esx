@@ -4,8 +4,8 @@ import React from 'react'
 //TODO simple host component
 //TODO esxi host component
 
-function Main() {
-  return <h1>Main Page</h1>
+function PrivatePage() {
+  return <h1>Private Page</h1>
 }
 
-export default Main
+export default PrivatePage;
