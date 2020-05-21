@@ -14,22 +14,18 @@ export const PrivateRoute: React.ComponentType<any> = ({ component: Component, .
       render={(props) =>
         login.loginStatus.isLoggedIn ? (
           <>
-            {console.log('1 login.loginStatus.isLoggedIn: ')}
-            {console.log(login.loginStatus.isLoggedIn)}
             <Component {...props} />
           </>
         ) : (
-          <>
-            {console.log('2 login.loginStatus.isLoggedIn: ')}
-            {console.log(login.loginStatus.isLoggedIn)}
-            <Redirect
-              to={{
-                pathname: '/login',
-                state: { from: props.location },
-              }}
-            />
-          </>
-        )
+            <>
+              <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: props.location },
+                }}
+              />
+            </>
+          )
       }
     />
   );

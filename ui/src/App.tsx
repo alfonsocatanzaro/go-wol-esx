@@ -9,7 +9,6 @@ import { useLogin } from './hooks/useLogin';
 import { PrivateRoute } from './components/PrivateRoute';
 
 // TODO Hide navbar if not logged in
-// TODO If not logged in redirect always to login page
 function App() {
   const { loginStatus, loginFn, logoutFn } = useLogin();
 
@@ -19,15 +18,9 @@ function App() {
         <NavBar />
         <div className="container">
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <PrivateRoute path="/privatepage">
-              <PrivatePage />
-            </PrivateRoute>
-            <Route path="/" exact={true}>
-              <Home />
-            </Route>
+            <Route path="/login" component={Login} />
+            <Route path="/" exact={true} component={Home} />
+            <PrivateRoute path="/privatepage" component={PrivatePage} />
           </Switch>
         </div>
       </LoginStatusContext.Provider>
