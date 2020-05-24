@@ -9,4 +9,5 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gorilla/handlers v1.4.2
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
+	github.com/tg123/go-htpasswd v1.0.0
 )

@@ -21,9 +21,10 @@ var version = "1.0.0"
 
 func main() {
 	//args container struct
-	cfg := struct {
+	config := struct {
 		Port  int32
 		Debug bool
+		Path  string
 	}{}
 
 	// init args Parser
@@ -32,11 +33,16 @@ func main() {
 	kp.Flag("port", "Listen port of the server").
 		Short('p').
 		Default("3000").
-		Int32Var(&cfg.Port)
+		Int32Var(&config.Port)
+
+	kp.Flag("path", "Path where store data").
+		Short('P').
+		Default("./data").
+		StringVar(&config.Path)
 
 	kp.Flag("debug", "debug mode on").
 		Short('d').
-		BoolVar(&cfg.Debug)
+		BoolVar(&config.Debug)
 
 	kp.HelpFlag.Short('h')
 
@@ -45,11 +51,18 @@ func main() {
 		kp.Usage(os.Args[1:])
 		os.Exit(1)
 	}
+
+	if _, err := os.Stat(config.Path); os.IsNotExist(err) {
+		os.MkdirAll(config.Path, os.ModePerm)
+	} else if err != nil {
+		panic(err)
+	}
+
 	// setup request handlers
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("./ui/build/")))
-	mux.Handle("/api/test", auth.JwtMiddleware.Handler(api.HelloWorldHandler))
-	mux.Handle("/api/login", auth.LoginHandler)
+	mux.Handle("/api/test", auth.JwtMiddleware.Handler(api.HelloWorldHandler(config.Path)))
+	mux.Handle("/api/login", auth.LoginHandler(config.Path))
 
 	// TODO api for get computers (status and child status)
 	// TODO api for new computer
@@ -65,14 +78,14 @@ func main() {
 
 	// configure http server
 	var handler http.Handler
-	if cfg.Debug {
+	if config.Debug {
 		handler = utils.CorsHandler(handlers.LoggingHandler(os.Stdout, mux))
 	} else {
 		handler = mux
 	}
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%v", cfg.Port),
+		Addr:    fmt.Sprintf(":%v", config.Port),
 		Handler: handler,
 	}
 
@@ -82,7 +95,7 @@ func main() {
 	// start server and bind error channel to error return of http server  start
 	go func() {
 		errs <- srv.ListenAndServe()
-		fmt.Println("Listen on port:", cfg.Port)
+		fmt.Println("Listen on port:", config.Port)
 	}()
 
 	// make channel for stop signal
