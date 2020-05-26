@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 import PrivatePage from './PrivatePage';
 
 // TODO il already login redirect to home
-// TODO show auth errors
 const Login: React.FC = () => {
   const [username, setUsername] = useState('alfonso');
   const [password, setPassword] = useState('password');
