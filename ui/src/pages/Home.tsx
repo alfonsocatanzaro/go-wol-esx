@@ -1,5 +1,6 @@
 import React from 'react'
 
+//TODO this page is protected
 //TODO list of PC
 //TODO simple host component
 //TODO esxi host component
