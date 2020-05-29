@@ -62,11 +62,12 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir("./ui/build/")))
 	mux.Handle("/api/test", auth.JwtMiddleware.Handler(api.HelloWorldHandler(config.Path)))
+	mux.Handle("/api/computers", auth.JwtMiddleware.Handler(api.ComputersHandler()))
 	mux.Handle("/api/login", auth.LoginHandler(config.Path))
 
-	// TODO api for get computers (status and child status)
 	// TODO api for new computer
 	// TODO api for edit computer
+	// TODO implement database
 	// TODO api for wol a pc
 	// TODO api for start/stop/pause VMs
 	// TODO api for shutdown esx host

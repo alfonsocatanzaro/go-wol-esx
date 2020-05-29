@@ -1,7 +1,8 @@
-package model
+package models
 
 // Computer contains computer data
 type Computer struct {
+	ID                 int     `json:"id"`
 	Name               string  `json:"name"`
 	Mac                string  `json:"mac"`
 	IPAddress          string  `json:"ip"`
@@ -27,6 +28,7 @@ type ESXInfo struct {
 
 // EsxVM contains virtual host status
 type EsxVM struct {
+	ID     int    `json:"id"`
 	Name   string `json:"name"`
 	Status string `json:"status"`
 }
