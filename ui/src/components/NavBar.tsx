@@ -25,13 +25,8 @@ export default function NavBar(): ReactElement {
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/" activeClassName="active" exact={true}>
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/privatepage" activeClassName="active">
-                Private
+              <NavLink className="nav-link" to="/computers" activeClassName="active">
+                Computers
               </NavLink>
             </li>
             {login.loginStatus.isLoggedIn ? (
@@ -46,12 +41,12 @@ export default function NavBar(): ReactElement {
                 </li>
               </>
             ) : (
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/login" activeClassName="active">
-                  Login
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/login" activeClassName="active">
+                    Login
                 </NavLink>
-              </li>
-            )}
+                </li>
+              )}
           </ul>
         </div>
       </div>

@@ -3,7 +3,6 @@ import './Login.css';
 import Axios from 'axios';
 import { LoginStatusContextType, LoginStatusContext } from '../contexts/LoginContext';
 import { Redirect } from 'react-router-dom';
-import PrivatePage from './PrivatePage';
 
 // TODO il already login redirect to home
 const Login: React.FC = () => {
@@ -101,7 +100,7 @@ const Login: React.FC = () => {
     <LoginStatusContext.Consumer>
       {login => (
         login.loginStatus.isLoggedIn ?
-          <Redirect to="/privatepage" /> :
+          <Redirect to="/computers" /> :
           loginpage
       )}
     </LoginStatusContext.Consumer>
