@@ -32,7 +32,7 @@ export default function NavBar(): ReactElement {
             {login.loginStatus.isLoggedIn ? (
               <>
                 <li className="nav-item">
-                  <a className="nav-link" href="#" onClick={() => login.logoutFn()}>
+                  <a className="nav-link" href="/#" onClick={() => login.logoutFn()}>
                     Logout
                   </a>
                 </li>
