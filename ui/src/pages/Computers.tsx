@@ -8,7 +8,6 @@ const computers: Computer[] = [
   {
     "ID": 1,
     "Name": "ESX00",
-    "IPAddress": "192.168.1.4",
     "Status": "OFFLINE",
     "Child": [
       {
@@ -26,7 +25,6 @@ const computers: Computer[] = [
   {
     "ID": 2,
     "Name": "ESX01",
-    "IPAddress": "192.168.1.5",
     "Status": "ONLINE",
     "Child": [
       {
@@ -37,7 +35,7 @@ const computers: Computer[] = [
       {
         "ID": 9,
         "Name": "Raspbian",
-        "Status": "PAUSED"
+        "Status": "PENDING"
       },
       {
         "ID": 3,
@@ -59,31 +57,21 @@ function Computers() {
 
 
   return (
-    <div className="row">
-      <div className="col-1"></div>
-      <div className="col-10">
-        <table className="table table-light mt-5">
-          <thead className="table-dark">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">IpAddress</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {computers.map((v, i) => {
-              return (
-                <ComputerRow
-                  key={v.ID}
-                  computer={v}
-                  commandHandler={(arg) => commandHandler(arg)} />
-              )
-            })}
-          </tbody>
-        </table>
+    <>
+      <div className="row border border-dark bg-dark text-light p-1 mt-4 rounded-lg ml-1 mr-1">
+        <div className="col-6 p-1 ">Name</div>
+        <div className="col-3 p-1">Status</div>
+        <div className="col-3 p-1">Action</div>
       </div>
-    </div>)
+      {computers.map((v, i) => {
+        return (
+          <ComputerRow
+            key={v.ID}
+            computer={v}
+            commandHandler={(arg) => commandHandler(arg)} />
+        )
+      })}
+    </>)
 }
 
 export default Computers

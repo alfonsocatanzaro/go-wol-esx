@@ -25,30 +25,44 @@ export default function ComputerRow({ computer, commandHandler }: ComputerRowPro
 
     return children.map((child, index) => {
       return (
-        <tr key={((computer.ID * 100) + index + 1).toString()}>
-          <th scope="row">&nbsp;<span className="text-black-50">↳</span>&nbsp;{child.Name}</th>
-          <td>{child.IPAddress}</td>
-          <td><StatusIndicator status={child.Status} /></td>
-          <td><ActionButtons
-            status={child.Status}
-            canEdit={false}
-            actionFn={(action) => actionFn(action, computer, child)} /></td>
-        </tr>
+        <div
+          className="row border border-dark bg-light text-black p-1 rounded-lg ml-1 mr-1"
+          key={((computer.ID * 100) + index + 1).toString()}>
+          <div className="col-6 p-1 pl-4">
+            <span className="font-weight-bold">{child.Name}</span>
+          </div>
+          <div className="col-3 p-1">
+            <StatusIndicator status={child.Status} />
+          </div>
+          <div className="col-3 p-1" >
+            <ActionButtons
+              status={child.Status}
+              canEdit={false}
+              actionFn={(action) => actionFn(action, computer, child)} /></div>
+        </div>
       )
     })
   }
 
   return (<>
-    <tr key={(computer.ID * 100).toString()} className="table-primary">
-      <th scope="row">{computer.Name} </th>
-      <td>{computer.IPAddress}</td>
-      <td><StatusIndicator status={computer.Status} /></td>
-      <td><ActionButtons
-        status={computer.Status}
-        canEdit={true}
-        actionFn={(action) => actionFn(action, computer)}
-      /></td>
-    </tr>
+    <div
+      className="row row border border-dark bg-info text-light p-1 pt-4 rounded-lg ml-1 mr-1"
+      key={(computer.ID * 100).toString()} >
+      <div className="col-6 p-1">
+        <span className="font-weight-bold">{computer.Name}</span>
+      </div>
+      <div className="col-3 p-1">
+        <StatusIndicator status={computer.Status} />
+      </div>
+      <div className="col-3 p-1">
+        <ActionButtons
+          status={computer.Status}
+          canEdit={true}
+          actionFn={(action) => actionFn(action, computer)}
+        />
+      </div>
+    </div>
     {child(computer.Child, computer)}
+
   </>)
 }
