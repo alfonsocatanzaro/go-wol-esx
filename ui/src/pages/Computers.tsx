@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import ComputerRow from '../components/ComputerRow';
-import { Computer, ChildComputer } from '../models/Computer';
+import { Computer, ChildComputer, ComputerActionArgs } from '../models/Computer';
 
-//TODO list of PC
-//TODO simple host component
-//TODO esxi host component
-
+// TODO: Obtain computerd from api service
 
 const computers: Computer[] = [
   {
     "ID": 1,
     "Name": "ESX00",
     "IPAddress": "192.168.1.4",
-    "Status": "PENDING",
+    "Status": "OFFLINE",
     "Child": [
       {
         "ID": 5,
@@ -52,9 +49,16 @@ const computers: Computer[] = [
 ];
 
 
-function Computers() {
-  return (
 
+
+function Computers() {
+
+  const commandHandler = useCallback((c: ComputerActionArgs) => {
+    console.log(`${c.computer.Name} ${c.action} ${c.child && c.child.Name}`)
+  }, []);
+
+
+  return (
     <div className="row">
       <div className="col-1"></div>
       <div className="col-10">
@@ -70,7 +74,10 @@ function Computers() {
           <tbody>
             {computers.map((v, i) => {
               return (
-                <ComputerRow computer={v} index={i} />
+                <ComputerRow
+                  key={v.ID}
+                  computer={v}
+                  commandHandler={(arg) => commandHandler(arg)} />
               )
             })}
           </tbody>

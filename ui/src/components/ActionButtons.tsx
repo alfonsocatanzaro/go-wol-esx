@@ -1,33 +1,53 @@
-import { faPlay, faPowerOff, faPause } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPowerOff, faPause, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Status } from '../models/Computer';
+import { Status, CommandAction } from '../models/Computer';
 
 type ActionButtonsProps = {
   status: Status
+  canEdit: boolean
+  actionFn: (_: CommandAction) => void
 }
 
-export function ActionButtons(props: ActionButtonsProps) {
+export function ActionButtons({ status, canEdit, actionFn }: ActionButtonsProps) {
+
+  const edit = (canEdit && status !== 'PENDING') ?
+    (<button
+      className="btn btn-secondary btn-sm"
+      onClick={() => actionFn('EDIT')}><FontAwesomeIcon icon={faEdit} /></button>) :
+    null;
+
   const start =
-    (props.status === 'PAUSED' || props.status === 'OFFLINE' || props.status === 'STOPPED') ?
-      (<button className="btn btn-success btn-sm "><FontAwesomeIcon icon={faPlay} /></button>) :
+    (status === 'PAUSED' || status === 'OFFLINE' || status === 'STOPPED') ?
+      (<button
+        className="btn btn-success btn-sm"
+        onClick={() => actionFn('POWERON')}
+      ><FontAwesomeIcon icon={faPlay} /></button>) :
       null;
 
   const stop =
-    (props.status === 'ONLINE' || props.status === 'RUNNING') ?
-      (<button className="btn btn-danger btn-sm"><FontAwesomeIcon icon={faPowerOff} /></button>) :
+    (status === 'ONLINE' || status === 'RUNNING') ?
+      (<button
+        className="btn btn-danger btn-sm"
+        onClick={() => actionFn('SHUTDOWN')}
+      ><FontAwesomeIcon icon={faPowerOff} /></button>) :
       null;
 
-  const pause = (props.status === 'RUNNING') ?
-    (<button className="btn btn-warning btn-sm"><FontAwesomeIcon icon={faPause} /></button>) :
+  const pause = (status === 'RUNNING') ?
+    (<button
+      className="btn btn-warning btn-sm"
+      onClick={() => actionFn('SUSPEND')}
+    ><FontAwesomeIcon icon={faPause} /></button>) :
     null;
 
-  const spinner = (props.status === 'PENDING') ?
-    (<div className="spinner-border text-primary" role="status">
+  const spinner = (status === 'PENDING') ?
+    (<div className="spinner-border text-primary" style={{
+      marginBottom: '-4px'
+    }} role="status" >
       <span className="sr-only">Loading...</span>
-    </div>) :
+    </div >) :
     null;
 
-  return (<>{start}{pause}{stop}{spinner}</>)
+  return (<>{edit}{start}{pause}{stop}{spinner}</>)
 
 }
