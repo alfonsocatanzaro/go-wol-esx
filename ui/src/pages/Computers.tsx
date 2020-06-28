@@ -1,60 +1,15 @@
 import React, { useCallback } from 'react';
 import ComputerRow from '../components/ComputerRow';
-import { Computer, ChildComputer, ComputerActionArgs } from '../models/Computer';
-
-// TODO: Obtain computerd from api service
-
-const computers: Computer[] = [
-  {
-    "ID": 1,
-    "Name": "ESX00",
-    "Status": "OFFLINE",
-    "Child": [
-      {
-        "ID": 5,
-        "Name": "UBUNTU",
-        "Status": "STOPPED"
-      },
-      {
-        "ID": 8,
-        "Name": "NODE80",
-        "Status": "ONLINE"
-      }
-    ] as ChildComputer[]
-  },
-  {
-    "ID": 2,
-    "Name": "ESX01",
-    "Status": "ONLINE",
-    "Child": [
-      {
-        "ID": 8,
-        "Name": "Windows10",
-        "Status": "STOPPED"
-      },
-      {
-        "ID": 9,
-        "Name": "Raspbian",
-        "Status": "PENDING"
-      },
-      {
-        "ID": 3,
-        "Name": "NONE90",
-        "Status": "ONLINE"
-      }
-    ] as ChildComputer[]
-  }
-];
-
-
-
+import { ComputerActionArgs } from '../models/Computer';
+import { useComputers } from '../hooks/useComputers';
+import Axios from 'axios';
 
 function Computers() {
+  const { computersList } = useComputers();
 
   const commandHandler = useCallback((c: ComputerActionArgs) => {
     console.log(`${c.computer.Name} ${c.action} ${c.child && c.child.Name}`)
   }, []);
-
 
   return (
     <>
@@ -63,7 +18,7 @@ function Computers() {
         <div className="col-3 p-1">Status</div>
         <div className="col-3 p-1">Action</div>
       </div>
-      {computers.map((v, i) => {
+      {computersList.map((v, i) => {
         return (
           <ComputerRow
             key={v.ID}

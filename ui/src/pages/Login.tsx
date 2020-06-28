@@ -4,7 +4,6 @@ import Axios from 'axios';
 import { LoginStatusContextType, LoginStatusContext } from '../contexts/LoginContext';
 import { Redirect } from 'react-router-dom';
 
-// TODO il already login redirect to home
 const Login: React.FC = () => {
   const [username, setUsername] = useState('alfonso');
   const [password, setPassword] = useState('password');

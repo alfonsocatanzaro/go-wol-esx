@@ -23,7 +23,7 @@ function App() {
               <Redirect to="/computers" />
             </Route>
             <Route path="/computers">
-              {/* {loginStatus.isLoggedIn ? <Computers /> : <Redirect to="/login" />} */}
+              {loginStatus.isLoggedIn ? <Computers /> : <Redirect to="/login" />}
               <Computers />
             </Route>
           </Switch>

@@ -8,10 +8,17 @@ import (
 	"github.com/alfonsocatanzaro/go-wol-esx/models"
 )
 
+const onLine= "ONLINE";
+const offLine = "OFFLINE";
+const paused = "PAUSED";
+const stopped ="STOPPED";
+const running = "RUNNING";
+const pending = "PENDING";
+
+
 type computerViewModel struct {
 	ID        int
 	Name      string
-	IPAddress string
 	Status    string
 	Child     []childComputerViewModel
 }
@@ -33,8 +40,7 @@ func ComputersHandler() http.HandlerFunc {
 			vm := computerViewModel{
 				ID:        c.ID,
 				Name:      c.Name,
-				IPAddress: c.IPAddress,
-				Status:    getRandomStatus([]string{"ONLINE", "OFFLINE", "UNKNOWN"}),
+				Status:    getRandomStatus([]string{onLine,offLine}),
 				Child:     make([]childComputerViewModel, 0),
 			}
 
@@ -43,7 +49,7 @@ func ComputersHandler() http.HandlerFunc {
 					child := childComputerViewModel{
 						ID:     v.ID,
 						Name:   v.Name,
-						Status: getRandomStatus([]string{"ONLINE", "OFFLINE", "SUSPENDED", "UNKNOWN"}),
+						Status: getRandomStatus([]string{onLine, offLine, stopped,paused, pending}),
 					}
 					vm.Child = append(vm.Child, child)
 				}
@@ -79,11 +85,9 @@ var fakedata = []models.Computer{
 				{
 					ID:     5,
 					Name:   "UBUNTU",
-					Status: "on",
 				}, {
 					ID:     8,
 					Name:   "NODE80",
-					Status: "off",
 				},
 			},
 		},
@@ -100,16 +104,13 @@ var fakedata = []models.Computer{
 				{
 					ID:     8,
 					Name:   "Windows10",
-					Status: "on",
 				}, {
 					ID:     9,
 					Name:   "Raspbian",
-					Status: "off",
 				},
 				{
 					ID:     3,
 					Name:   "NONE90",
-					Status: "on",
 				},
 			},
 		},
