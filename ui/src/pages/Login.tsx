@@ -1,37 +1,19 @@
-import React, { useState, FormEvent, useContext } from 'react';
+import React, { useState, FormEvent } from 'react';
 import './Login.css';
-import Axios from 'axios';
-import { LoginStatusContextType, LoginStatusContext } from '../contexts/LoginContext';
+import { LoginStatusContext } from '../contexts/useLoginContext';
 import { Redirect } from 'react-router-dom';
+import { useLogin } from '../hooks/useLogin';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('alfonso');
   const [password, setPassword] = useState('password');
-  const [errorMessage, setErrorMessage] = useState('');
+  const { login, errorMessage, clearErrorMessage } = useLogin();
 
-  const login = useContext<LoginStatusContextType>(LoginStatusContext);
+
 
   function Login(e: FormEvent) {
     e.preventDefault();
-
-    (async () => {
-      try {
-        const response = await Axios.post(
-          `${process.env.REACT_APP_API_URL}/api/login`,
-          { username, password },
-          { headers: { 'Content-Type': 'application/json' } }
-        );
-        setErrorMessage('');
-        login.loginFn(username, response.data);
-
-      } catch (error) {
-        if (error.response?.status === 401) {
-          setErrorMessage('Wrong username or password!');
-        } else {
-          setErrorMessage(error.message);
-        }
-      }
-    })();
+    login(username, password);
   }
 
   const loginpage = (
@@ -82,7 +64,7 @@ const Login: React.FC = () => {
               {errorMessage && (
                 <div className="alert alert-danger fade show" role="alert">
                   {errorMessage}
-                  <button type="button" className="close" aria-label="Close" onClick={() => setErrorMessage('')}>
+                  <button type="button" className="close" aria-label="Close" onClick={() => clearErrorMessage()}>
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -97,8 +79,8 @@ const Login: React.FC = () => {
 
   return (
     <LoginStatusContext.Consumer>
-      {login => (
-        login.loginStatus.isLoggedIn ?
+      {loginCtx => (
+        loginCtx.loginStatus.isLoggedIn ?
           <Redirect to="/computers" /> :
           loginpage
       )}

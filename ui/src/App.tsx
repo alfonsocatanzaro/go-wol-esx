@@ -2,13 +2,13 @@ import React from 'react';
 import Login from './pages/Login';
 import NavBar from './components/NavBar';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { LoginStatusContext } from './contexts/LoginContext';
-import { useLogin } from './hooks/useLogin';
+import { LoginStatusContext } from './contexts/useLoginContext';
+import { useLoginContext } from './contexts/useLoginContext';
 import Computers from './pages/Computers';
 
 // TODO Hide navbar if not logged in
 function App() {
-  const { loginStatus, loginFn, logoutFn } = useLogin();
+  const { loginStatus, loginFn, logoutFn } = useLoginContext();
 
   return (
     <Router>

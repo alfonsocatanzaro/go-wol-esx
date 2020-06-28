@@ -1,45 +1,32 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LoginStatusContextType, LoginStatusContext } from '../contexts/useLoginContext';
 import Axios from "axios";
 
-
-export interface LoginStatus {
-  isLoggedIn: boolean;
-  username: string;
-  token: string;
-}
-
-export const initialLoginStatus: LoginStatus = {
-  isLoggedIn: false,
-  username: '',
-  token: '',
-}
-
-
 export const useLogin = () => {
+  const loginContext = useContext<LoginStatusContextType>(LoginStatusContext);
+  const [errorMessage, setErrorMessage] = useState('');
+  const login = (username: string, password: string) => {
+    (async () => {
+      try {
+        const response = await Axios.post(
+          `${process.env.REACT_APP_API_URL}/api/login`,
+          { username, password },
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        setErrorMessage('');
+        loginContext.loginFn(username, response.data);
 
-  const [loginStatus, setLoginStatus] = useState<LoginStatus>(initialLoginStatus);
-
-
-
-  const loginFn = (username: string, token: string) => {
-
-
-    
-    setLoginStatus({
-      isLoggedIn: true,
-      username: username,
-      token: token
-    });
-    Axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
+      } catch (error) {
+        if (error.response?.status === 401) {
+          setErrorMessage('Wrong username or password!');
+        } else {
+          setErrorMessage(error.message);
+        }
+      }
+    })();
+  };
+  const clearErrorMessage = () => {
+    setErrorMessage('');
   }
-
-  const logoutFn = () => { 
-    Axios.defaults.headers.common['Authorization'] = null; 
-    delete Axios.defaults.headers.common['Authorization'];
-    setLoginStatus(initialLoginStatus); }
-
-
-
-  return { loginStatus, loginFn, logoutFn }
+  return { login, errorMessage, clearErrorMessage };
 }
-

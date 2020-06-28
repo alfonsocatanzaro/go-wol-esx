@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LoginStatusContext, LoginStatusContextType } from '../contexts/LoginContext'
+import { LoginStatusContext, LoginStatusContextType } from '../contexts/useLoginContext'
 
 export default function NavBar(): ReactElement {
   const login = useContext<LoginStatusContextType>(LoginStatusContext);
