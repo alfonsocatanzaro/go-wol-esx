@@ -24,7 +24,6 @@ function App() {
             </Route>
             <Route path="/computers">
               {loginStatus.isLoggedIn ? <Computers /> : <Redirect to="/login" />}
-              <Computers />
             </Route>
           </Switch>
         </div>
