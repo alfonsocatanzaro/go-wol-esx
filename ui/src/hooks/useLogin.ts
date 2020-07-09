@@ -4,7 +4,7 @@ import Axios from "axios";
 
 export const useLogin = () => {
   const loginContext = useContext<LoginStatusContextType>(LoginStatusContext);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const login = (username: string, password: string) => {
     (async () => {
       try {

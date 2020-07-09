@@ -7,8 +7,8 @@ import Axios from "axios";
 
 
 export const useComputers = () => {
-  const [computersList, setComputersList] = useState([] as Computer[]);
-  const [time, setTime] = useState(Date.now());
+  const [computersList, setComputersList] = useState<Computer[]>([]);
+  const [time, setTime] = useState<number>(Date.now());
 
   const fetchData = useCallback(async () => {
     const resp = await Axios.get<Computer[]>(

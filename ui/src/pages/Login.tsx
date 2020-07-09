@@ -5,8 +5,8 @@ import { Redirect } from 'react-router-dom';
 import { useLogin } from '../hooks/useLogin';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('alfonso');
-  const [password, setPassword] = useState('password');
+  const [username, setUsername] = useState<string>('alfonso');
+  const [password, setPassword] = useState<string>('password');
   const { login, errorMessage, clearErrorMessage } = useLogin();
 
 
