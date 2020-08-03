@@ -69,7 +69,7 @@ func main() {
 	// TODO api for edit computer
 	// TODO implement database
 	// TODO api for wol a pc
-	// TODO api for start/stop/pause VMs
+	// TODO api for start/stop/pause VMs (we'll use these commands: [vim-cmd vmsvc/getallvms] [vim-cmd vmsvc/power.getstate <ID>])
 	// TODO api for shutdown esx host
 	// TODO view model for mail page
 	// TODO model for add/edit computer
