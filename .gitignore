@@ -16,4 +16,4 @@
 bin/
 
 # Data folder
-data/
+data/*
