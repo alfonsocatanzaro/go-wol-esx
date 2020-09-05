@@ -5,11 +5,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"path/filepath"
 	"syscall"
 
 	"github.com/alfonsocatanzaro/go-wol-esx/api"
 	"github.com/alfonsocatanzaro/go-wol-esx/auth"
+	"github.com/alfonsocatanzaro/go-wol-esx/database"
 	"github.com/alfonsocatanzaro/go-wol-esx/utils"
 	"github.com/gorilla/handlers"
 
@@ -55,6 +57,11 @@ func main() {
 	if _, err := os.Stat(config.Path); os.IsNotExist(err) {
 		os.MkdirAll(config.Path, os.ModePerm)
 	} else if err != nil {
+		panic(err)
+	}
+
+	err := database.Open(path.Join(config.Path, "data.db"))
+	if err != nil {
 		panic(err)
 	}
 
