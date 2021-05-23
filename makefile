@@ -4,7 +4,7 @@ buildui:
 
 # Build server (go)
 buildserver: 
-	go build -o bin/go-wol-esx cmd/main.go
+	go build -o bin/go-wol-esx main.go
 
 # Run all (server and ui) after build both
 runall: buildui buildserver
