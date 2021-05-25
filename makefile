@@ -1,6 +1,6 @@
 # Build ui (react)
 buildui:
-	cd ui && npm run build
+	cd ui && yarn build
 
 # Build server (go)
 buildserver: 
@@ -16,8 +16,8 @@ run: buildserver
 
 # Run ui on mac/linux
 runui:
-	cd ui && npm run start
+	cd ui && yarn start
 
 # Run UI on windows dev machine
 runuiw:
-	cd ui && npm run startw
+	cd ui && yarn startw
