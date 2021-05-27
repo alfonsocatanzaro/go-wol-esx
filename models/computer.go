@@ -1,16 +1,18 @@
 package models
 
+import "github.com/google/uuid"
+
 // Computer contains computer data
 type Computer struct {
-	ID                 int     `json:"id"`
-	Name               string  `json:"name"`
-	Mac                string  `json:"mac"`
-	IPAddress          string  `json:"ip"`
-	BroadcastIPAddress string  `json:"broadcast"`
-	SSHEnabled         bool    `json:"sshEnabled"`
-	SSH                SSHInfo `json:"sshInfo"`
-	ESXEnabled         bool    `json:"esxEnabled"`
-	Esx                ESXInfo `json:"esxInfo"`
+	ID                 uuid.UUID `json:"id"`
+	Name               string    `json:"name"`
+	Mac                string    `json:"mac"`
+	IPAddress          string    `json:"ip"`
+	BroadcastIPAddress string    `json:"broadcast"`
+	SSHEnabled         bool      `json:"sshEnabled"`
+	SSH                SSHInfo   `json:"sshInfo"`
+	ESXEnabled         bool      `json:"esxEnabled"`
+	Esx                ESXInfo   `json:"esxInfo"`
 }
 
 // SSHInfo contains ssh access info
@@ -28,7 +30,6 @@ type ESXInfo struct {
 
 // EsxVM contains virtual host status
 type EsxVM struct {
-	ID     int    `json:"id"`
-	Name   string `json:"name"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
-
