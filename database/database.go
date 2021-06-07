@@ -75,3 +75,27 @@ func GetAll() ([]models.Computer, error) {
 	})
 	return computers, nil
 }
+
+func Delete(c *models.Computer) error {
+	return DeleteByID(c.ID)
+}
+
+func DeleteByID(id uuid.UUID) error {
+	db, err := bolt.Open(dbFilePath, 0600, nil)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	err = db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(COMPUTERS_BUCKET))
+		bytesId, err := id.MarshalBinary()
+		if err != nil {
+			return err
+		}
+		err = b.Delete(bytesId)
+		return err
+	})
+	return err
+
+}

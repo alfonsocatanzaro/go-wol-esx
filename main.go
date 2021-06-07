@@ -25,7 +25,7 @@ func main() {
 		fmt.Println("Error while creating data path ", err.Error())
 		os.Exit(1)
 	}
-	
+
 	err = database.InitDb(path.Join(config.Path, "data.db"))
 	if err != nil {
 		fmt.Println("Error while init database ", err.Error())
