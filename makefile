@@ -18,6 +18,6 @@ run: buildserver
 runui:
 	cd ui && yarn start
 
-# Run UI on windows dev machine
-runuiw:
-	cd ui && yarn startw
+# Exec tests
+test:
+	go test ./...
