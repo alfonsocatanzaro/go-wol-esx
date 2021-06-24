@@ -27,7 +27,7 @@ export default function ComputerRow({ computer, commandHandler }: ComputerRowPro
       return (
         <div
           className="row border border-dark bg-light text-black p-1 rounded-lg ml-1 mr-1"
-          key={((computer.ID * 100) + index + 1).toString()}>
+          key={computer.ID + "--" + child.ID}>
           <div className="col-6 p-1 pl-4">
             <span className="font-weight-bold">{child.Name}</span>
           </div>
@@ -47,7 +47,7 @@ export default function ComputerRow({ computer, commandHandler }: ComputerRowPro
   return (<>
     <div
       className="row row border border-dark bg-info text-light p-1 pt-4 rounded-lg ml-1 mr-1"
-      key={(computer.ID * 100).toString()} >
+      key={computer.ID} >
       <div className="col-6 p-1">
         <span className="font-weight-bold">{computer.Name}</span>
       </div>

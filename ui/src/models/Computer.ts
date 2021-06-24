@@ -1,6 +1,6 @@
 
 export interface Computer {
-  ID: number,
+  ID: string,
   Name: string,
 
   Status: Status,

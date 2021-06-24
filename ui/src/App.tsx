@@ -4,10 +4,12 @@ import NavBar from './components/NavBar';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { LoginStatusContext } from './contexts/useLoginContext';
 import { useLoginContext } from './contexts/useLoginContext';
-import Computers from './pages/Computers';
+import ComputerList from './pages/ComputerList';
+import ComputerAdd from './pages/ComputerAdd';
+import ComputerEdit from './pages/ComputerEdit';
 
 // TODO Hide navbar if not logged in
-function App() {
+export default function App() {
   const { loginStatus, loginFn, logoutFn } = useLoginContext();
 
   return (
@@ -22,8 +24,14 @@ function App() {
             <Route path="/" exact={true}>
               <Redirect to="/computers" />
             </Route>
+            <Route path="/computers/add">
+              {loginStatus.isLoggedIn ? <ComputerAdd /> : <Redirect to="/login" />}
+            </Route>
+            <Route path="/computers/edit/:id">
+              {loginStatus.isLoggedIn ? <ComputerEdit /> : <Redirect to="/login" />}
+            </Route>
             <Route path="/computers">
-              {loginStatus.isLoggedIn ? <Computers /> : <Redirect to="/login" />}
+              {loginStatus.isLoggedIn ? <ComputerList /> : <Redirect to="/login" />}
             </Route>
           </Switch>
         </div>
@@ -32,4 +40,3 @@ function App() {
   );
 }
 
-export default App;

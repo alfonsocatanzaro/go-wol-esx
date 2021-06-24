@@ -4,7 +4,7 @@ import { LoginStatusContext } from '../contexts/useLoginContext';
 import { Redirect } from 'react-router-dom';
 import { useLogin } from '../hooks/useLogin';
 
-const Login: React.FC = () => {
+export default function Login() {
   const [username, setUsername] = useState<string>('alfonso');
   const [password, setPassword] = useState<string>('password');
   const { login, errorMessage, clearErrorMessage } = useLogin();
@@ -54,11 +54,11 @@ const Login: React.FC = () => {
                 <input type="checkbox" className="custom-control-input" id="customCheck1" />
                 <label className="custom-control-label" htmlFor="customCheck1">
                   Remember password
-                        </label>
+                </label>
               </div>
               <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
                 Sign in
-                      </button>
+              </button>
 
               <hr className="my-4" />
               {errorMessage && (
@@ -88,5 +88,3 @@ const Login: React.FC = () => {
 
   );
 };
-
-export default Login;

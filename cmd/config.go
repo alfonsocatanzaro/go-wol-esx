@@ -27,7 +27,7 @@ func ParseCLI(version string) (*Config, error) {
 
 	kp.Flag("path", "Path where store data").
 		Short('P').
-		Default("./data").
+		Default("../data/").
 		StringVar(&config.Path)
 
 	kp.Flag("debug", "debug mode on").
